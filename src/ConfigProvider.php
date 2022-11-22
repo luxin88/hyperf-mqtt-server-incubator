@@ -27,6 +27,14 @@ class ConfigProvider
                     ],
                 ],
             ],
+            'publish' => [
+                [
+                    'id' => 'mqtt',
+                    'description' => 'The config for mqtt.',
+                    'source' => __DIR__ . '/../publish/mqtt.php',
+                    'destination' => BASE_PATH . '/config/autoload/mqtt.php',
+                ],
+            ],
         ];
     }
 }
