@@ -13,6 +13,7 @@ namespace Hyperf\MqttServer\Handler;
 
 use Hyperf\HttpMessage\Server\Response;
 use Hyperf\HttpMessage\Stream\SwooleStream;
+use Hyperf\MqttServer\Protocol;
 use Psr\Http\Message\ServerRequestInterface;
 use Simps\MQTT\Protocol\Types;
 use Simps\MQTT\Protocol\V3;
@@ -27,7 +28,7 @@ class MQTTPingReqHandler implements HandlerInterface
             return $response;
         }
 
-        return $response->withBody(new SwooleStream(V3::pack(
+        return $response->withBody(new SwooleStream(Protocol::get()::pack(
             ['type' => Types::PINGRESP]
         )));
     }

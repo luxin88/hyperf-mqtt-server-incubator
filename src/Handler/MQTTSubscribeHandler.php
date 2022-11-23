@@ -31,7 +31,8 @@ class MQTTSubscribeHandler implements HandlerInterface
             }
         }
 
-        return $response->withBody(new SwooleStream(V3::pack(
+        $packer = config('mqtt.packer');
+        return $response->withBody(new SwooleStream($packer::pack(
             [
                 'type' => Types::SUBACK,
                 'message_id' => $data['message_id'] ?? '',

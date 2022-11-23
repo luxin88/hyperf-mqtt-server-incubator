@@ -32,8 +32,8 @@ use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerInterface;
+use Simps\MQTT\Protocol\ProtocolInterface;
 use Simps\MQTT\Protocol\Types;
-use Simps\MQTT\Protocol\V3;
 use Swoole\Coroutine\Server\Connection;
 use Swoole\Server as SwooleServer;
 use Throwable;
@@ -171,7 +171,7 @@ class MQTTServer implements OnReceiveInterface, MiddlewareInitializerInterface
 
     protected function buildRequest(int $fd, int $reactorId, string $data): ServerRequestInterface
     {
-        $data = V3::unpack($data);
+        $data = Protocol::get()::unpack($data);
         $uri = new Uri('http://0.0.0.0/');
         $request = new Request('POST', $uri, ['Content-Type' => 'application/json'], new SwooleStream(Json::encode($data)));
         return $request->withAttribute(Types::class, $data['type'] ?? 0)

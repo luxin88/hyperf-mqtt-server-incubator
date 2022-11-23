@@ -13,6 +13,7 @@ namespace Hyperf\MqttServer\Handler;
 
 use Hyperf\HttpMessage\Server\Response;
 use Hyperf\HttpMessage\Stream\SwooleStream;
+use Hyperf\MqttServer\Protocol;
 use Psr\Http\Message\ServerRequestInterface;
 use Simps\MQTT\Protocol\Types;
 use Simps\MQTT\Protocol\V3;
@@ -31,7 +32,7 @@ class MQTTPublishHandler implements HandlerInterface
             if ($targetFd != $fd) {
                 $server->send(
                     $targetFd,
-                    V3::pack(
+                    Protocol::get()::pack(
                         [
                             'type' => $data['type'],
                             'topic' => $data['topic'],
@@ -47,7 +48,7 @@ class MQTTPublishHandler implements HandlerInterface
         }
 
         if ($data['qos'] === 1) {
-            $response = $response->withBody(new SwooleStream(V3::pack(
+            $response = $response->withBody(new SwooleStream(Protocol::get()::pack(
                 [
                     'type' => Types::PUBACK,
                     'message_id' => $data['message_id'] ?? '',
